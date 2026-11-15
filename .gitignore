@@ -1,0 +1,15 @@
+# Environments
+venv/
+.env
+
+# Python
+__pycache__/
+*.pyc
+
+# Database
+*.sqlite
+*.sqlite-journal
+
+# Node / React
+wellness-frontend/node_modules/
+wellness-frontend/dist/
