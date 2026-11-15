@@ -25,7 +25,7 @@ export default function App() {
     setMessages((prev) => [...prev, { role: 'user', text: userText }, { role: 'agent', text: '' }]);
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/chat', {
+      const response = await fetch('https://mental-wellness-companion-c04h.onrender.com/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: userText })
