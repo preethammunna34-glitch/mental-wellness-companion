@@ -1,0 +1,10 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "cd wellness-frontend && npm install",
+  "buildCommand": "cd wellness-frontend && npm run build",
+  "outputDirectory": "wellness-frontend/dist",
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/index" }
+  ]
+}

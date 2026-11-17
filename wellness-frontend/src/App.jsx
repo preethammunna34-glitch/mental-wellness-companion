@@ -2,6 +2,17 @@ import { useState, useRef, useEffect } from 'react';
 import { Send } from 'lucide-react';
 import { motion } from 'framer-motion';
 
+// Each browser gets its own conversation thread so visitors never see each other's chats.
+function getSessionId() {
+  let id = null;
+  try { id = localStorage.getItem('wellness_session_id'); } catch {}
+  if (!id) {
+    id = crypto.randomUUID();
+    try { localStorage.setItem('wellness_session_id', id); } catch {}
+  }
+  return id;
+}
+
 export default function App() {
   const [messages, setMessages] = useState([
     { role: 'agent', text: "Hi there. I'm here to listen. How are you feeling today?" }
@@ -25,10 +36,10 @@ export default function App() {
     setMessages((prev) => [...prev, { role: 'user', text: userText }, { role: 'agent', text: '' }]);
 
     try {
-      const response = await fetch('https://mental-wellness-companion-c04h.onrender.com/chat', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || ''}/api/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: userText })
+        body: JSON.stringify({ message: userText, session_id: getSessionId() })
       });
 
       if (!response.body) throw new Error("Stream not supported.");
