@@ -32,6 +32,11 @@ async def chat_endpoint(request: ChatRequest):
                 if chunk and isinstance(chunk, str):
                     # Format as a Server-Sent Event (SSE)
                     yield f"data: {json.dumps({'text': chunk})}\n\n"
+            elif event["event"] == "on_chain_end" and event.get("name") == "crisis_protocol":
+                # The crisis reply is fixed text, not an LLM stream, so send it explicitly
+                output = event["data"].get("output") or {}
+                for msg in output.get("messages", []):
+                    yield f"data: {json.dumps({'text': msg})}\n\n"
         
         # Signal to the React frontend that the stream is finished
         yield "data: [DONE]\n\n"
